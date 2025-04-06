@@ -1,5 +1,5 @@
 from fastapi import FastAPI, Request
-from fastapi.responses import FileResponse, JSONResponse
+from fastapi.responses import FileResponse, JSONResponse, Response
 from fastapi.middleware.cors import CORSMiddleware
 import subprocess
 import os
@@ -8,7 +8,7 @@ import shutil
 
 app = FastAPI()
 
-# Allow CORS from any origin
+# CORS Middleware
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -16,14 +16,19 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# NEW: Add root route for GET and OPTIONS
+# ✅ Handle GET, HEAD, and OPTIONS at root `/`
 @app.get("/")
-def root():
-    return {"message": "YouTube MP3 downloader backend is running."}
+async def read_root():
+    return {"message": "Backend is live 🎉"}
+
+@app.head("/")
+async def head_root():
+    return Response(status_code=200)
 
 @app.options("/")
-def options_root():
-    return JSONResponse(status_code=204)
+async def options_root():
+    return Response(status_code=204)
+
 
 @app.post("/download")
 async def download(request: Request):

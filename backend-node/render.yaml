@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: spotify-backend
+    env: node
+    buildCommand: "npm install"
+    startCommand: "node index.js"
+    envVars:
+      - key: CLIENT_ID
+        value: YOUR_SPOTIFY_CLIENT_ID
+      - key: CLIENT_SECRET
+        value: YOUR_SPOTIFY_CLIENT_SECRET
+    plan: free
